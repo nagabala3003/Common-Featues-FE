@@ -2,6 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+
+     <!-- Here we are using 'self' and 'unsafe-inline' for style-src in development mode but in production mode we have to use
+    'self' for style-src -->
+    <meta 
+    http-equiv="Content-Security-Policy" 
+    content="default-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self';" 
+  />
+
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
