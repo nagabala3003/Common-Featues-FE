@@ -1,19 +1,20 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardActions from '@mui/material/CardActions';
-import React, { useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import Grid from '@mui/material/Grid2';
-import { List, AutoSizer, ListRowRenderer } from 'react-virtualized';
-import 'react-virtualized/styles.css'; 
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardActions from "@mui/material/CardActions";
+import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Grid from "@mui/material/Grid2";
+import { List, AutoSizer, ListRowRenderer } from "react-virtualized";
+import "react-virtualized/styles.css";
+import Grid2 from "@mui/material/Grid2";
 
 interface CardData {
   id: number;
   name: string;
-  email: string; 
+  email: string;
   joinedOn: Date;
   commentCount: number;
 }
@@ -23,8 +24,25 @@ interface card1Props {
   loadMore: () => void; // Function to load more data passed via props
 }
 
-const Card1: React.FC<card1Props> = ({ cardData,loadMore }) => {
+const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
   const [hasMore, setHasMore] = useState(true);
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // Update dimensions on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchData = () => {
     if (cardData.length >= 100) {
@@ -34,9 +52,20 @@ const Card1: React.FC<card1Props> = ({ cardData,loadMore }) => {
     }
   };
 
+  useEffect(() => {
+    getCardsPerRow(dimensions.width);
+  }, [dimensions, dimensions.width, window.innerWidth]);
+
+  const getCardsPerRow = (width: any) => {
+    console.log("getCardsPerRow", width);
+    if (width < 600) return 1; // Small screens (1 card)
+    if (width < 960) return 3; // Medium screens (3 cards)
+    return 4; // Large screens (4 cards or more)
+  };
+  console.log("window width", window.innerWidth);
   return (
-    <>     
-        {/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 12, sm: 12, md: 12 }}>
+    <>
+      {/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 12, sm: 12, md: 12 }}>
       <InfiniteScroll
         dataLength={cardData.length} // This is an important field to render the next data        
         next={fetchData}
@@ -75,46 +104,84 @@ const Card1: React.FC<card1Props> = ({ cardData,loadMore }) => {
         
       </InfiniteScroll>
         </Grid> */}
-        {/* <div> */}
-        <AutoSizer>
-  {({ height, width }:any) => (
-    <List
-      width={1000}
-      height={1000}
-      rowHeight={200} // Approximate height of each Card
-      rowCount={cardData.length} // Total number of items
-      rowRenderer={({ index, key, style }:any) => {
-        const item = cardData[index]; // Get the current item using index
+      {/* <div> */}
 
-        return (
-          <div key={key} style={style}> {/* Ensure it uses the style prop for virtualization */}
-            <Card sx={{ maxWidth: 345, margin: 3 }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {item.id}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Name: {item.name}, Email: {item.email}, Joined: {item.joinedOn.toDateString()}, Comments: {item.commentCount}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Share
-                </Button>
-              </CardActions>
-            </Card>
-          </div>
-        );
-      }}
-    />
-  )}
-</AutoSizer>
+      <AutoSizer>
+        {({ height, width }: any) => {
+          const cardsPerRow = getCardsPerRow(dimensions.width); // Number of cards per row
+          const cardWidth = width / cardsPerRow; // Calculate card width
+          const cardHeight = 250; // Set an approximate card height
+          const rowHeight = cardHeight; // Adjust based on card content
+          const rowCount = Math.ceil(cardData.length / cardsPerRow); // Calculate total rows
 
-        {/* </div> */}
+          return (
+            <List
+              width={dimensions.width}
+              height={dimensions.height}
+              rowHeight={rowHeight}
+              rowCount={rowCount}
+              rowRenderer={({ index, key, style }: any) => {
+                // Calculate the items for the current row
+                const items = cardData.slice(
+                  index * cardsPerRow,
+                  index * cardsPerRow + cardsPerRow
+                );
+
+                return (
+                  <>
+                    <div
+                      key={key}
+                      style={{
+                        ...style,
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {items.map((item: any) => (
+                        <Card
+                          key={item.id}
+                          sx={{ width: cardWidth - 20, margin: "10px 10px" }}
+                        >
+                          {" "}
+                          {/* Adjust for margin */}
+                          <CardActionArea>
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                              >
+                                {item.id}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "text.secondary" }}
+                              >
+                                Name: {item.name}, Email: {item.email}, Joined:{" "}
+                                {item.joinedOn.toDateString()}, Comments:{" "}
+                                {item.commentCount}
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                          <CardActions>
+                            <Button size="small" color="primary">
+                              Share
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      ))}
+                    </div>
+                  </>
+                );
+              }}
+            />
+          );
+        }}
+      </AutoSizer>
+
+      {/* </div> */}
     </>
   );
-}
+};
 
 export default React.memo(Card1);
