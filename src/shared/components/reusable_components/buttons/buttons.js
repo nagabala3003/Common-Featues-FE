@@ -1,7 +1,11 @@
-import React from "react";
+import { Button } from "@mui/material";
 
 function buttons() {
-  return <div>buttons</div>;
+  return (
+    <>
+      <Button variant="contained">Submit</Button>
+    </>
+  );
 }
 
 export default buttons;
