@@ -35,8 +35,8 @@ const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
   useEffect(() => {
     const handleResize = () => {
       setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: window.screen.availWidth,
+        height: window.screen.availHeight,
       });
     };
 
@@ -54,15 +54,14 @@ const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
 
   useEffect(() => {
     getCardsPerRow(dimensions.width);
-  }, [dimensions, dimensions.width, window.innerWidth]);
+  }, [dimensions]);
 
   const getCardsPerRow = (width: any) => {
-    console.log("getCardsPerRow", width);
     if (width < 600) return 1; // Small screens (1 card)
     if (width < 960) return 3; // Medium screens (3 cards)
     return 4; // Large screens (4 cards or more)
   };
-  console.log("window width", window.innerWidth);
+
   return (
     <>
       {/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 12, sm: 12, md: 12 }}>
@@ -130,7 +129,7 @@ const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
                 return (
                   <>
                     <div
-                      key={key}
+                      key={index}
                       style={{
                         ...style,
                         display: "flex",
