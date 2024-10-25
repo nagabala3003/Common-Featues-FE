@@ -8,7 +8,7 @@ const Facebook_Login = () => {
       <div>
         {/* <Button1 btnName="Sign in with Facebook" /> */}
         <LoginSocialFacebook
-          appId="1699347697523349"
+          appId="852430790375986"
           onResolve={(res) => {
             console.log("Result when login with Facebook", res);
           }}
