@@ -6,10 +6,8 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Grid from "@mui/material/Grid2";
 import { List, AutoSizer, ListRowRenderer } from "react-virtualized";
 import "react-virtualized/styles.css";
-import Grid2 from "@mui/material/Grid2";
 
 interface CardData {
   id: number;
@@ -64,7 +62,7 @@ const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
 
   return (
     <>
-      {/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 12, sm: 12, md: 12 }}>
+      {/* 
       <InfiniteScroll
         dataLength={cardData.length} // This is an important field to render the next data        
         next={fetchData}
@@ -78,8 +76,7 @@ const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
         // scrollableTarget="parentScrollableDiv"
       >
             {cardData.map((item: CardData) => (
-            // <Grid size={{xs: 2, sm: 4, md: 4 ,lg:3 }} key={item.id} sx={{margin:1}}>
-            //     <Item>
+         
           <Card sx={{ maxWidth: 345, margin: 3 }} >
             <CardActionArea>
               <CardContent>
@@ -97,12 +94,11 @@ const Card1: React.FC<card1Props> = ({ cardData, loadMore }) => {
               </Button>
             </CardActions>
           </Card>
-            //     </Item>
-            // </Grid>
+        
         ))}
         
       </InfiniteScroll>
-        </Grid> */}
+      */}
       {/* <div> */}
 
       <AutoSizer>

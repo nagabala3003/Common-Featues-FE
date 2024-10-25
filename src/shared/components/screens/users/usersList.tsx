@@ -111,7 +111,17 @@ const UsersList = () => {
     setCardData(users);
   }, []);
 
+  useEffect(() => {
+    fetch("https://localhost:3000/data")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("1234", data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
   const handleChange = (e: any) => {
+    console.log("imageInput", e.target.value);
     setData1(e.target.value);
     debouncedUpdate(e.target.value);
     throttlingUpdate(e.target.value);
@@ -133,6 +143,8 @@ const UsersList = () => {
   return (
     <>
       <input
+        type="file"
+        accept="image/*" // This restricts file selection to image types
         onChange={(e) => {
           handleChange(e);
         }}

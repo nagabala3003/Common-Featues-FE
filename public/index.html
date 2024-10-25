@@ -5,14 +5,17 @@
 
      <!-- Here we are using 'self' and 'unsafe-inline' for style-src in development mode but in production mode we have to use
     'self' for style-src -->
-    <meta 
+    <!-- <meta 
     http-equiv="Content-Security-Policy" 
-    content="default-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self';" 
-  />
+    content="default-src 'self' https:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https:; img-src http:;" 
+  /> -->
+
+  <!-- <meta http-equiv="Content-Security-Policy-Report-Only" content="default-src 'self'; report-uri /csp-violation-report-endpoint;"> -->
+
 
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#000000" /> 
     <meta
       name="description"
       content="Web site created using create-react-app"
